@@ -607,6 +607,8 @@ function selectItem(idx){
   document.getElementById('detailContent').style.display='flex';
   renderDetail();
   renderList();
+  // Mobile: slide to detail view
+  if(window.innerWidth<=768) mobShowDetail(allData[idx]);
 }
 
 function renderDetail(){
@@ -805,45 +807,28 @@ function shuffleArr(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math
 
 // ── MOBILE STATE ──────────────────────────────────────────
 const isMobile=()=>window.innerWidth<=768;
-let mobScrollPos=0; // preserve list scroll position
+let mobScrollPos=0;
 
-// Hamburger menu
 function openMobMenu(){document.getElementById('mobSheet').classList.add('open');}
 function closeMobMenu(){document.getElementById('mobSheet').classList.remove('open');}
 
-// Go to detail view (called after selectItem on mobile)
 function mobShowDetail(item){
-  if(!isMobile()) return;
-  // Save scroll position before leaving list
   mobScrollPos=document.getElementById('questionList').scrollTop;
-  // Update back button meta
   const tl=item.tier==='Verified'?'✓ Verified':item.tier==='Gold'?'★ Gold':item.tier;
   document.getElementById('mobBackMeta').innerHTML=
     `<span class="tier-badge tier-${item.tier}" style="font-size:10px">${tl}</span>
      <span style="font-size:11px;color:var(--text3)">${item.crossing_count} crossings</span>`;
-  // Slide: list out left, detail in from right
   document.getElementById('mobSidebar').classList.add('mob-slide-out');
   document.getElementById('mobDetail').classList.add('mob-slide-in');
-  // Scroll detail to top
   document.getElementById('mobDetail').scrollTop=0;
 }
 
-// Go back to list view
 function mobGoBack(){
-  if(!isMobile()) return;
   document.getElementById('mobSidebar').classList.remove('mob-slide-out');
   document.getElementById('mobDetail').classList.remove('mob-slide-in');
-  // Restore scroll position
   setTimeout(()=>{
     document.getElementById('questionList').scrollTop=mobScrollPos;
   },50);
-}
-
-// Patch selectItem to trigger mobile transition
-const _selectItemOrig=selectItem;
-function selectItem(idx){
-  _selectItemOrig(idx);
-  if(isMobile()) mobShowDetail(allData[idx]);
 }
 </script>
 </body>
