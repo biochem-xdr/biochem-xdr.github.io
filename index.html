@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioChem-XDR — Cross-Domain Biochemical Reasoning Benchmark</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* ── TEAL-CENTERED BIOCKEM PALETTE ── */
+  --teal:#008080;          /* primary brand — active, selected, identity */
+  --teal-hover:#0A9396;    /* hover state */
+  --teal-soft:#94D2BD;     /* subtle tags, soft highlights */
+  --teal-deep:#005F5F;     /* pressed / strong accent */
+  --navy:#1E2A44;          /* structural foundation — navbar, header */
+  --blue-sec:#3A5A8A;      /* secondary buttons, UI components */
+  --gold-logo:#D4AF37;     /* benzene logo */
+  --coral:#EE6369;         /* alerts, disease nodes, T4 */
+
+  /* ── SURFACES — clean white/gray for breathing space ── */
+  --bg:#FFFFFF;            /* main content background */
+  --bg2:#F5F6F8;           /* panels, cards */
+  --bg3:#EDEFF2;           /* hover, pressed */
+  --sidebar-bg:#EEF1F4;    /* sidebar — slightly distinct from detail */
+  --input-bg:#F1F3F5;      /* search input */
+
+  /* ── TEXT ── */
+  --text:#0F172A;          /* primary — near black */
+  --text2:#6B7280;         /* secondary — medium gray */
+  --text3:#9CA3AF;         /* hints, placeholders */
+
+  /* ── BORDERS ── */
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.15);
+
+  /* ── TIER COLORS ── */
+  --t1:#2e7d32;  /* T1 easiest — deep green */
+  --t2:#1565c0;  /* T2 — blue */
+  --t3:#e65100;  /* T3 — amber-orange */
+  --t4:#c62828;  /* T4 hardest — red */
+
+  --verified:#5b21b6;
+  --gold-tier:#b45309;
+  --radius:10px;
+}
+
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg2);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* SPLASH */
+.splash{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.6s}
+.splash-logo{display:flex;align-items:center;gap:16px;margin-bottom:36px}
+.splash-title{font-size:30px;font-weight:700;color:white;letter-spacing:-0.5px}
+.splash-sub{font-size:14px;color:rgba(255,255,255,0.5);margin-top:4px}
+.splash-bar-wrap{width:300px;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;margin-bottom:16px}
+.splash-bar{height:100%;background:var(--teal-soft);border-radius:2px;width:0%;transition:width 0.35s ease}
+.splash-msg{font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.4px}
+
+/* BANNER — soft teal tint, light */
+.banner{background:rgba(0,128,128,0.07);border-bottom:1px solid rgba(0,128,128,0.15);padding:7px 20px;font-size:12px;color:#2d4a4a;text-align:center;line-height:1.6;flex-shrink:0}
+.banner a{color:var(--teal-deep);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.banner a:hover{color:var(--teal)}
+
+/* HEADER */
+header{background:var(--navy);color:white;padding:0 16px;height:54px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.header-brand{display:flex;align-items:center;gap:10px}
+header h1{font-size:15px;font-weight:700;letter-spacing:0.2px;white-space:nowrap;color:white}
+.header-tagline{font-size:11px;color:rgba(255,255,255,0.4);white-space:nowrap;margin-left:2px}
+.header-sep{width:1px;height:22px;background:rgba(255,255,255,0.15);margin:0 6px}
+.stats-bar{display:flex;gap:6px;align-items:center}
+.stat-pill{font-size:11px;padding:3px 11px;border-radius:20px;border:1px solid rgba(148,210,189,0.4);color:var(--teal-soft);font-weight:500;white-space:nowrap}
+.spacer{flex:1}
+.nav-btns{display:flex;gap:5px;align-items:center}
+.nav-btn{display:flex;align-items:center;gap:5px;font-size:11px;padding:5px 11px;border-radius:7px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.85);cursor:pointer;font-weight:500;transition:all 0.15s;white-space:nowrap;text-decoration:none}
+.nav-btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.35);color:white}
+.nav-btn svg{width:13px;height:13px;flex-shrink:0}
+.nav-btn.hf-btn{background:rgba(255,153,0,0.15);border-color:rgba(255,153,0,0.35)}
+.nav-btn.hf-btn:hover{background:rgba(255,153,0,0.26)}
+.nav-btn.eval-btn{background:rgba(0,128,128,0.2);border-color:rgba(0,128,128,0.45)}
+.nav-btn.eval-btn:hover{background:rgba(0,128,128,0.32)}
+
+/* MAIN */
+.main{display:flex;flex:1;overflow:hidden}
+
+/* SIDEBAR — slightly gray, distinct from white detail panel */
+.sidebar{width:370px;flex-shrink:0;display:flex;flex-direction:column;background:var(--sidebar-bg);border-right:1px solid var(--border)}
+.search-area{padding:10px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+input[type=text]{flex:1;padding:8px 11px;border:1px solid var(--border2);border-radius:8px;font-size:13px;background:var(--input-bg);color:var(--text);outline:none;transition:all 0.15s}
+input[type=text]:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,128,128,0.12)}
+input[type=text]::placeholder{color:var(--text3)}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap}
+.filter-btn{font-size:11px;padding:4px 11px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-weight:500;transition:all 0.15s}
+.filter-btn:hover{background:var(--bg3);color:var(--text)}
+.filter-btn.active{background:var(--teal);color:white;border-color:var(--teal)}
+.filter-btn.t1.active{background:var(--t1);border-color:var(--t1);color:white}
+.filter-btn.t2.active{background:var(--t2);border-color:var(--t2);color:white}
+.filter-btn.t3.active{background:var(--t3);border-color:var(--t3);color:white}
+.filter-btn.t4.active{background:var(--t4);border-color:var(--t4);color:white}
+.filter-btn.verified.active{background:var(--verified);border-color:var(--verified);color:white}
+.filter-btn.gold-btn.active{background:var(--gold-tier);border-color:var(--gold-tier);color:white}
+.result-count{font-size:11px;color:var(--text3);padding:5px 12px 0}
+.question-list{flex:1;overflow-y:auto;padding:8px}
+.question-list::-webkit-scrollbar{width:4px}
+.question-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* Q CARDS */
+.q-card{padding:10px 12px;border-radius:9px;cursor:pointer;border:1px solid transparent;margin-bottom:4px;transition:all 0.15s}
+.q-card:hover{background:var(--bg2);border-color:var(--border)}
+.q-card.selected{background:rgba(0,128,128,0.06);border-left:3px solid var(--teal);border-top:1px solid rgba(0,128,128,0.2);border-right:1px solid rgba(0,128,128,0.2);border-bottom:1px solid rgba(0,128,128,0.2)}
+.q-card-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.tier-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.3px}
+.tier-T1{background:#e8f5e9;color:var(--t1)}
+.tier-T2{background:#e3f0fb;color:var(--t2)}
+.tier-T3{background:#fff3e0;color:var(--t3)}
+.tier-T4{background:#ffebee;color:var(--t4)}
+.tier-Verified{background:#ede9fe;color:var(--verified)}
+.tier-Gold{background:#fef3c7;color:var(--gold-tier)}
+.crossing-badge{font-size:10px;color:var(--text3)}
+.q-text{font-size:12px;color:var(--text2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* DETAIL PANEL — clean white, breathing space */
+.detail-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);gap:14px;padding:40px}
+.empty-state p{font-size:14px;color:var(--text2)}
+.empty-state small{font-size:12px;color:var(--text3);text-align:center;max-width:280px;line-height:1.6}
+.detail-content{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:18px}
+.detail-content::-webkit-scrollbar{width:4px}
+.detail-content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.detail-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.meta-chip{font-size:11px;padding:3px 9px;border-radius:5px;background:var(--bg2);color:var(--text2);font-weight:500;border:1px solid var(--border)}
+.question-text{font-size:14px;line-height:1.8;color:var(--text)}
+.section-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-card{padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg);font-size:13px;display:flex;align-items:flex-start;gap:9px;transition:all 0.15s}
+.choice-card.revealed-correct{border-color:var(--teal);background:rgba(0,128,128,0.05)}
+.choice-card.revealed-wrong{border-color:var(--border);opacity:0.45}
+.choice-label{font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text2)}
+.choice-card.revealed-correct .choice-label{background:var(--teal);color:white}
+.choice-text{font-size:12px;line-height:1.55;color:var(--text)}
+.reveal-btn{font-size:12px;padding:8px 18px;border-radius:8px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);cursor:pointer;font-weight:600;transition:all 0.15s;align-self:flex-start}
+.reveal-btn:hover{background:var(--teal);color:white}
+.reveal-btn.revealed{background:var(--teal);color:white;border-color:var(--teal)}
+
+/* GRAPH */
+.graph-container{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative}
+.graph-toolbar{position:absolute;top:10px;right:10px;display:flex;gap:6px;z-index:10}
+.graph-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;transition:background 0.15s}
+.graph-btn:hover{background:var(--bg3);color:var(--teal)}
+/* Legend — no background, no border, sits directly on graph */
+.graph-legend{position:absolute;bottom:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:10;padding:4px 0}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text2)}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.long-answer-box{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px 16px;font-size:12px;line-height:1.75;color:var(--text2)}
+.path-raw{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:11px;font-family:'Menlo','Consolas',monospace;color:var(--text3);line-height:1.9;white-space:pre-wrap;word-break:break-all}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;align-items:center;justify-content:center}
+.modal-box{background:var(--bg);border-radius:14px;padding:28px;max-width:580px;width:92%;max-height:82vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-title{font-size:17px;font-weight:700;color:var(--text)}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text3)}
+.modal-close:hover{color:var(--teal)}
+.placeholder-note{background:rgba(0,128,128,0.06);border:1px solid rgba(0,128,128,0.2);border-radius:9px;padding:14px 16px;font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px}
+.modal table{width:100%;border-collapse:collapse;font-size:12px}
+.modal th{padding:9px 11px;background:var(--bg2);text-align:left;border-bottom:1px solid var(--border);font-weight:600;color:var(--text2)}
+.modal td{padding:8px 11px;border-bottom:1px solid var(--border);color:var(--text)}
+.modal tr:last-child td{border-bottom:none}
+.modal tr:nth-child(even) td{background:var(--bg2)}
+
+/* TOOLTIP */
+.tooltip{position:fixed;background:var(--navy);color:white;padding:8px 12px;border-radius:8px;font-size:11px;pointer-events:none;z-index:1000;max-width:280px;line-height:1.6;opacity:0;transition:opacity 0.15s;white-space:pre-line}
+svg text{pointer-events:none}
+.no-results{padding:28px;text-align:center;font-size:13px;color:var(--text3);line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <div class="splash-logo">
+    <svg width="58" height="58" viewBox="0 0 56 56" fill="none">
+      <polygon points="28,6 49,17.5 49,40.5 28,52 7,40.5 7,17.5" fill="none" stroke="#D4AF37" stroke-width="2.2"/>
+      <polygon points="28,14 42,21.5 42,36.5 28,44 14,36.5 14,21.5" fill="none" stroke="#D4AF37" stroke-width="1.4" opacity="0.6"/>
+      <line x1="28" y1="6"  x2="28" y2="14"  stroke="#D4AF37" stroke-width="1.4"/>
+      <line x1="49" y1="17.5" x2="42" y2="21.5" stroke="#D4AF37" stroke-width="1.4"/>
+      <line x1="49" y1="40.5" x2="42" y2="36.5" stroke="#D4AF37" stroke-width="1.4"/>
+      <line x1="28" y1="52" x2="28" y2="44"  stroke="#D4AF37" stroke-width="1.4"/>
+      <line x1="7"  y1="40.5" x2="14" y2="36.5" stroke="#D4AF37" stroke-width="1.4"/>
+      <line x1="7"  y1="17.5" x2="14" y2="21.5" stroke="#D4AF37" stroke-width="1.4"/>
+      <circle cx="28" cy="28" r="4" fill="#D4AF37" opacity="0.9"/>
+    </svg>
+    <div>
+      <div class="splash-title">BioChem-XDR</div>
+      <div class="splash-sub">Cross-Domain Biochemical Reasoning Benchmark</div>
+    </div>
+  </div>
+  <div class="splash-bar-wrap"><div class="splash-bar" id="splashBar"></div></div>
+  <div class="splash-msg" id="splashMsg">Initializing...</div>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+  BioChem-XDR is open science — dataset, KG construction pipeline, evaluation scripts, and paper are publicly released.
+  7,038 cross-domain biochemical reasoning questions built from KEGG · Rhea · UniProt to expose the co-occurrence trap in LLMs.
+  &nbsp;·&nbsp;<a href="https://github.com/YOUR_USERNAME/biochem-xdr" target="_blank">GitHub</a>
+  &nbsp;·&nbsp;<a href="https://huggingface.co/datasets/YOUR_HF/biochem-xdr" target="_blank">HuggingFace</a>
+  &nbsp;·&nbsp;<a href="YOUR_ARXIV_URL" target="_blank">Paper</a>
+  &nbsp;·&nbsp;If you find this useful, a ⭐ on GitHub is appreciated.
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">
+    <svg width="26" height="26" viewBox="0 0 56 56" fill="none">
+      <polygon points="28,6 49,17.5 49,40.5 28,52 7,40.5 7,17.5" fill="none" stroke="#D4AF37" stroke-width="2.8"/>
+      <polygon points="28,14 42,21.5 42,36.5 28,44 14,36.5 14,21.5" fill="none" stroke="#D4AF37" stroke-width="1.6" opacity="0.6"/>
+      <circle cx="28" cy="28" r="4.5" fill="#D4AF37"/>
+    </svg>
+    <h1>BioChem-XDR</h1>
+    <span class="header-tagline">Cross-Domain Biochemical Reasoning</span>
+  </div>
+  <div class="header-sep"></div>
+  <div class="stats-bar">
+    <div class="stat-pill" id="statTotal">Loading...</div>
+    <div class="stat-pill" id="statFiltered"></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="nav-btns">
+    <a class="nav-btn" href="YOUR_ARXIV_URL" target="_blank">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="2" y="1" width="10" height="13" rx="1.5"/>
+        <path d="M5 5h6M5 8h6M5 11h4"/>
+      </svg>
+      Paper
+    </a>
+    <a class="nav-btn" href="https://github.com/YOUR_USERNAME/biochem-xdr" target="_blank">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a class="nav-btn hf-btn" href="https://huggingface.co/datasets/YOUR_HF/biochem-xdr" target="_blank">🤗 Dataset</a>
+    <button class="nav-btn eval-btn" onclick="document.getElementById('evalModal').style.display='flex'">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+        <polyline points="1,12 5,7 9,9 13,3"/>
+        <circle cx="13" cy="3" r="1.5" fill="currentColor" stroke="none"/>
+        <line x1="1" y1="15" x2="15" y2="15"/>
+      </svg>
+      Leaderboard
+    </button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="sidebar">
+    <div class="search-area">
+      <input type="text" id="searchInput" placeholder="Search questions, enzymes, diseases..." oninput="filterQuestions()">
+      <div class="filter-row">
+        <button class="filter-btn active" data-tier="all"       onclick="setTier(this)">All</button>
+        <button class="filter-btn t1"     data-tier="T1"        onclick="setTier(this)">T1 Easiest</button>
+        <button class="filter-btn t2"     data-tier="T2"        onclick="setTier(this)">T2</button>
+        <button class="filter-btn t3"     data-tier="T3"        onclick="setTier(this)">T3</button>
+        <button class="filter-btn t4"     data-tier="T4"        onclick="setTier(this)">T4 Hardest</button>
+        <button class="filter-btn verified" data-tier="Verified" onclick="setTier(this)">✓ Verified</button>
+        <button class="filter-btn gold-btn" data-tier="Gold"    onclick="setTier(this)">★ Gold</button>
+      </div>
+    </div>
+    <div class="result-count" id="resultCount"></div>
+    <div class="question-list" id="questionList">
+      <div class="no-results">Loading questions...</div>
+    </div>
+  </div>
+
+  <div class="detail-panel">
+    <div class="empty-state" id="emptyState">
+      <svg width="54" height="54" viewBox="0 0 56 56" fill="none" opacity="0.28">
+        <polygon points="28,6 49,17.5 49,40.5 28,52 7,40.5 7,17.5" fill="none" stroke="var(--navy)" stroke-width="2.2"/>
+        <polygon points="28,14 42,21.5 42,36.5 28,44 14,36.5 14,21.5" fill="none" stroke="var(--navy)" stroke-width="1.4"/>
+        <circle cx="28" cy="28" r="4" fill="var(--navy)"/>
+      </svg>
+      <p>Select a question to explore</p>
+      <small>Each item shows shuffled MCQ choices, an interactive knowledge graph path, and the full reference answer.</small>
+    </div>
+    <div class="detail-content" id="detailContent" style="display:none"></div>
+  </div>
+</div>
+
+<!-- LEADERBOARD MODAL -->
+<div class="modal-overlay" id="evalModal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title">Leaderboard &amp; Evaluation Results</div>
+      <button class="modal-close" onclick="document.getElementById('evalModal').style.display='none'">×</button>
+    </div>
+    <div class="placeholder-note">
+      Full 12-model evaluation results will be published here upon paper release.
+      Evaluation covers frontier general models, biomedical-specialized models, and smaller general models.
+      The table below shows GPT-4o calibration results used to construct difficulty tiers.
+    </div>
+    <table>
+      <thead><tr><th>Tier</th><th>Items</th><th>GPT-4o Acc.</th><th>Avg Crossings</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tier-badge tier-T1">T1</span></td><td>2,837</td><td style="color:var(--t1);font-weight:700">100%</td><td>2.37</td><td style="color:var(--text2)">GPT-4o correct · lower crossings</td></tr>
+        <tr><td><span class="tier-badge tier-T2">T2</span></td><td>2,890</td><td style="color:var(--t2);font-weight:700">100%</td><td>4.72</td><td style="color:var(--text2)">GPT-4o correct · higher crossings</td></tr>
+        <tr><td><span class="tier-badge tier-T3">T3</span></td><td>640</td><td style="color:var(--t3);font-weight:700">0%</td><td>2.59</td><td style="color:var(--text2)">GPT-4o failed · lower crossings</td></tr>
+        <tr><td><span class="tier-badge tier-T4">T4</span></td><td>671</td><td style="color:var(--t4);font-weight:700">0%</td><td>4.73</td><td style="color:var(--text2)">GPT-4o failed · higher crossings</td></tr>
+        <tr style="border-top:2px solid var(--border)"><td><strong>Total</strong></td><td><strong>7,038</strong></td><td><strong>81.0%</strong></td><td>—</td><td style="color:var(--text2)">Full BioChem-XDR dataset</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;font-size:11px;color:var(--text3);line-height:1.7">
+      Full 12-model leaderboard · BioChem-XDR Verified (~1,200 PhD-annotated) ·
+      BioChem-XDR Gold (~300 professor-verified) results coming with paper publication.
+    </div>
+  </div>
+</div>
+
+<script>
+let allData=[],filtered=[],selectedTier='all',currentItem=null;
+let simulation=null,zoomBehavior=null,svgG=null;
+
+function setSplash(pct,msg){
+  document.getElementById('splashBar').style.width=pct+'%';
+  document.getElementById('splashMsg').textContent=msg;
+}
+
+setSplash(8,'Connecting to dataset...');
+
+fetch('data.json')
+  .then(r=>{if(!r.ok)throw new Error();return r.json();})
+  .then(data=>{
+    setSplash(65,'Shuffling '+data.length.toLocaleString()+' questions...');
+    shuffleArr(data);
+    allData=data;
+    setSplash(92,'Building interface...');
+    return new Promise(r=>setTimeout(r,220));
+  })
+  .then(()=>{setSplash(100,'Ready.');return new Promise(r=>setTimeout(r,380));})
+  .then(()=>{hideSplash();initApp();})
+  .catch(()=>{
+    setSplash(100,'Demo mode — sample data loaded');
+    loadDemo();
+    setTimeout(()=>{hideSplash();initApp();},700);
+  });
+
+function hideSplash(){
+  const sp=document.getElementById('splash');
+  sp.style.opacity='0';
+  setTimeout(()=>sp.style.display='none',600);
+}
+
+function loadDemo(){
+  const en=['GNPAT','AGPS','TXNRD2','CYP27C1','LARS2','ACOT2','MDH1','DLAT','GGT2','NT5C1B','GMPPB','PTGS1','AZIN2'];
+  const di=['Gaucher disease','Mitochondrial complex I deficiency','Rhizomelic chondrodysplasia punctata type 2','Usher syndrome 3B','Optic atrophy 15','Focal dermal hypoplasia','Fabry disease','Krabbe disease'];
+  const pw=['Fatty acid degradation','Citrate cycle','Glycolysis','Sphingolipid metabolism','Isoquinoline alkaloid biosynthesis','Mycolic acid biosynthesis','Purine metabolism'];
+  const qs=[
+    "In Wolman disease, the primary enzymatic deficiency leads to lysosomal accumulation of cholesterol esters and triglycerides. Tracing the metabolic consequences through fatty acid degradation, which multienzyme complex component encoded by DLAT becomes critically relevant?",
+    "A researcher studying mitochondrial aminoacyl-tRNA synthetase disorders discovers mutations in LARS2 cause both HLASA and Optic atrophy 15. The Optic atrophy 15 gene encodes an acyl-CoA thioesterase whose substrates feed into plant cuticle biosynthesis sharing long-chain acyl-CoA with mycolic acid biosynthesis. Which enzyme is at the terminal node?",
+    "Tracing the network: leukoencephalopathy porphyria → HMBS → ALAD → acute hepatic porphyria → FOLH1 → aceruloplasminemia → CPT1C → ACSL1 → mycolic acid biosynthesis. Which enzyme is the terminal node and what is its biochemical function?",
+    "GCNT2 is associated with a lysosomal storage disorder where MDH1 upregulation is compensatory. Which downstream enzyme's substrate availability increases through the ECrel connection in this pathway?",
+    "A patient with oculocutaneous albinism type 1A shows elevated DHT and reduced dopamine synthesis. Which enzyme in the steroid metabolism pathway shares kinetic regulatory mechanisms with the rate-limiting enzyme for melanin biosynthesis?",
+  ];
+  const tiers=['T1','T1','T2','T2','T3','T3','T4','T4','T1','T2'];
+  const dc=['enzyme_kinetics','disease_mechanism','pathway_link','metabolic_pathway'];
+  const edgeTypes=['--associated_with_disease-->','--has_enzyme_association-->','--maplink-->','--ECrel-->','--interacts_via-->'];
+  allData=Array.from({length:80},(_, i)=>{
+    const t=tiers[i%tiers.length];
+    const crossing=t==='T1'?2:t==='T2'?4:t==='T3'?3:6;
+    const pathParts=[];
+    for(let s=0;s<=crossing;s++){
+      const pool=[en,di,pw,en];
+      const name=pool[s%pool.length][(i+s)%pool[s%pool.length].length];
+      if(s>0)pathParts.push(edgeTypes[s%edgeTypes.length]);
+      pathParts.push(`${name} [${dc[s%dc.length]}]`);
+    }
+    return{id:i,tier:t,crossing_count:crossing,question:qs[i%qs.length],
+      short_correct_answer:en[i%en.length],short_distractor_1:en[(i+2)%en.length],
+      short_distractor_2:en[(i+4)%en.length],short_distractor_3:en[(i+6)%en.length],
+      correct_answer:`${en[i%en.length]} is the enzyme connecting this pathway chain through its role in the cross-domain biochemical network. It catalyzes the critical step linking ${di[i%di.length]} to ${pw[i%pw.length]} through mitochondrial redox homeostasis and enzyme kinetics.`,
+      path_text:pathParts.join('\n'),gpt4o_correct:t==='T1'||t==='T2'};
+  });
+  shuffleArr(allData);
+}
+
+function initApp(){
+  document.getElementById('statTotal').textContent=allData.length.toLocaleString()+' items';
+  filterQuestions();
+}
+
+function setTier(btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedTier=btn.dataset.tier;
+  filterQuestions();
+}
+
+function filterQuestions(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  filtered=allData.filter(item=>{
+    let tm=selectedTier==='all'||
+      (selectedTier==='Verified'&&(item.tier==='Verified'||item.tier==='Gold'))||
+      (selectedTier==='Gold'&&item.tier==='Gold')||
+      item.tier===selectedTier;
+    const tx=!q||item.question.toLowerCase().includes(q)||
+      (item.short_correct_answer||'').toLowerCase().includes(q)||
+      (item.path_text||'').toLowerCase().includes(q);
+    return tm&&tx;
+  });
+  document.getElementById('statFiltered').textContent='showing '+filtered.length.toLocaleString();
+  document.getElementById('resultCount').textContent=filtered.length.toLocaleString()+' questions';
+  renderList();
+}
+
+function renderList(){
+  const list=document.getElementById('questionList');
+  if(filtered.length===0){
+    list.innerHTML='<div class="no-results">No questions match your search.<br>Try different keywords or select a different tier.</div>';
+    return;
+  }
+  const show=filtered.slice(0,200);
+  list.innerHTML=show.map(item=>{
+    const tl=item.tier==='Verified'?'✓ Verified':item.tier==='Gold'?'★ Gold':item.tier;
+    const sel=currentItem&&currentItem.id===item.id?'selected':'';
+    return`<div class="q-card ${sel}" onclick="selectItem(${allData.indexOf(item)})">
+      <div class="q-card-meta">
+        <span class="tier-badge tier-${item.tier}">${tl}</span>
+        <span class="crossing-badge">${item.crossing_count} crossings</span>
+      </div>
+      <div class="q-text">${item.question}</div>
+    </div>`;
+  }).join('');
+  if(filtered.length>200)list.innerHTML+=`<div class="no-results">Showing 200 of ${filtered.length.toLocaleString()} — refine search to see more</div>`;
+}
+
+function selectItem(idx){
+  currentItem=allData[idx];
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('detailContent').style.display='flex';
+  renderDetail();
+  renderList();
+}
+
+function renderDetail(){
+  const item=currentItem;if(!item)return;
+  const pool=[
+    {text:item.short_correct_answer,isCorrect:true},
+    {text:item.short_distractor_1,isCorrect:false},
+    {text:item.short_distractor_2,isCorrect:false},
+    {text:item.short_distractor_3,isCorrect:false},
+  ];
+  shuffleArr(pool);
+  const choices=pool.map((c,i)=>({...c,label:['A','B','C','D'][i]}));
+  const tl=item.tier==='Verified'?'✓ Verified':item.tier==='Gold'?'★ Gold':item.tier;
+  document.getElementById('detailContent').innerHTML=`
+    <div>
+      <div class="detail-meta">
+        <span class="tier-badge tier-${item.tier}" style="font-size:12px;padding:4px 11px">${tl}</span>
+        <span class="meta-chip">${item.crossing_count} cross-domain crossings</span>
+        ${item.id!==undefined?`<span class="meta-chip">Item #${item.id}</span>`:''}
+      </div>
+      <div class="question-text">${item.question}</div>
+    </div>
+    <div>
+      <div class="section-title">Answer choices — reveal after selecting</div>
+      <div class="choices-grid">
+        ${choices.map(c=>`<div class="choice-card" id="choice-${c.label}">
+          <div class="choice-label">${c.label}</div>
+          <div class="choice-text">${c.text}</div>
+        </div>`).join('')}
+      </div>
+      <div style="margin-top:10px">
+        <button class="reveal-btn" id="revealBtn" onclick='revealAnswer(${JSON.stringify(choices)})'>
+          Reveal correct answer
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Knowledge graph path — hover nodes · drag to rearrange · scroll to zoom</div>
+      <div class="graph-container" id="graphContainer" style="height:310px">
+        <div class="graph-toolbar">
+          <button class="graph-btn" onclick="zoomIn()">+</button>
+          <button class="graph-btn" onclick="zoomOut()">−</button>
+          <button class="graph-btn" onclick="resetZoom()">↺</button>
+        </div>
+        <div class="graph-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#008080"></div>Enzyme</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#EE6369"></div>Disease</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3A5A8A"></div>Pathway</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#94D2BD"></div>Metabolite</div>
+        </div>
+        <svg id="kgSvg" style="width:100%;height:100%"></svg>
+      </div>
+    </div>
+    <div>
+      <div class="section-title">Full reference answer</div>
+      <div class="long-answer-box">${item.correct_answer||'Not available'}</div>
+    </div>
+    <div>
+      <div class="section-title">Source KG path</div>
+      <div class="path-raw">${(item.path_text||'Not available').replace(/-->/g,'\n  →')}</div>
+    </div>`;
+  setTimeout(()=>renderGraph(item.path_text),50);
+}
+
+function revealAnswer(choices){
+  choices.forEach(c=>{const el=document.getElementById('choice-'+c.label);if(el)el.classList.add(c.isCorrect?'revealed-correct':'revealed-wrong');});
+  const btn=document.getElementById('revealBtn');
+  if(btn){btn.textContent='Answer revealed ✓';btn.classList.add('revealed');btn.disabled=true;}
+}
+
+function parsePathToGraph(pathText){
+  if(!pathText)return{nodes:[],links:[]};
+  const segments=pathText.split(/\n?--[^>]*-->\n?/).map(s=>s.trim()).filter(Boolean);
+  const edgeMatches=[...pathText.matchAll(/--([^>]+)-->/g)].map(m=>m[1].trim().replace(/_/g,' '));
+  const nodes=[],links=[],seen=new Map();
+  segments.forEach(seg=>{
+    const dm=seg.match(/\[([^\]]+)\]/);
+    const domain=dm?dm[1].trim():'unknown';
+    const name=seg.replace(/\[.*?\]/g,'').replace(/,.*$/,'').trim();
+    if(!seen.has(name)){seen.set(name,nodes.length);nodes.push({id:nodes.length,name,shortName:name.length>22?name.substring(0,21)+'…':name,domain});}
+  });
+  for(let i=0;i<segments.length-1;i++){
+    const sn=segments[i].replace(/\[.*?\]/g,'').replace(/,.*$/,'').trim();
+    const tn=segments[i+1].replace(/\[.*?\]/g,'').replace(/,.*$/,'').trim();
+    if(seen.has(sn)&&seen.has(tn))links.push({source:seen.get(sn),target:seen.get(tn),label:edgeMatches[i]||''});
+  }
+  return{nodes,links};
+}
+
+function domainColor(domain){
+  const d=(domain||'').toLowerCase();
+  // Semantic color mapping — teal=enzyme, blue=pathway, coral=disease, soft-teal=metabolite
+  if(d.includes('enzyme'))return{fill:'rgba(0,128,128,0.1)',stroke:'#008080',text:'#005F5F'};
+  if(d.includes('disease'))return{fill:'rgba(238,99,105,0.1)',stroke:'#EE6369',text:'#b91c1c'};
+  if(d.includes('pathway')||d.includes('maplink'))return{fill:'rgba(58,90,138,0.1)',stroke:'#3A5A8A',text:'#1e3a5f'};
+  if(d.includes('metabolic')||d.includes('metabolite'))return{fill:'rgba(148,210,189,0.2)',stroke:'#94D2BD',text:'#005F5F'};
+  return{fill:'rgba(107,114,128,0.1)',stroke:'#6B7280',text:'#374151'};
+}
+
+function renderGraph(pathText){
+  const{nodes,links}=parsePathToGraph(pathText);
+  if(nodes.length===0)return;
+  const container=document.getElementById('graphContainer');if(!container)return;
+  const svg=d3.select('#kgSvg');svg.selectAll('*').remove();
+  const W=container.clientWidth,H=container.clientHeight;
+  zoomBehavior=d3.zoom().scaleExtent([0.25,4]).on('zoom',e=>svgG.attr('transform',e.transform));
+  svg.call(zoomBehavior);
+  svg.append('defs').append('marker').attr('id','arrow').attr('viewBox','0 -5 10 10').attr('refX',25).attr('refY',0).attr('markerWidth',6).attr('markerHeight',6).attr('orient','auto').append('path').attr('d','M0,-5L10,0L0,5').attr('fill','#9CA3AF');
+  svgG=svg.append('g');
+
+  // More separation between nodes — fixes clustering
+  const nodeCount=nodes.length;
+  const linkDist=nodeCount<=4?180:nodeCount<=7?160:140;
+  const repulse=nodeCount<=4?-400:nodeCount<=7?-350:-280;
+
+  simulation=d3.forceSimulation(nodes)
+    .force('link',d3.forceLink(links).id(d=>d.id).distance(linkDist).strength(0.9))
+    .force('charge',d3.forceManyBody().strength(repulse))
+    .force('center',d3.forceCenter(W/2,H/2))
+    .force('collision',d3.forceCollide(55))  // bigger collision radius = less overlap
+    .force('x',d3.forceX(W/2).strength(0.04))
+    .force('y',d3.forceY(H/2).strength(0.04));
+
+  // Edge lines — hoverable to show full label
+  const linkG=svgG.append('g');
+  const link=linkG.selectAll('line').data(links).join('line')
+    .attr('stroke','#d1d5db').attr('stroke-width',1.5)
+    .attr('marker-end','url(#arrow)')
+    .style('cursor','default')
+    .on('mouseover',(e,d)=>showTip(e,d.label||''))
+    .on('mouseout',hideTip);
+
+  // Short edge label — only 2-3 words max, centered on edge, hidden if too long
+  // Strategy: show a short abbreviation always, full label on hover
+  const edgeLbl=svgG.append('g').selectAll('text').data(links).join('text')
+    .attr('font-size',8).attr('fill','#9CA3AF').attr('text-anchor','middle')
+    .style('pointer-events','none')
+    .text(d=>{
+      // Shorten to first meaningful word(s) only — no truncation mid-word
+      const words=d.label.split(' ');
+      if(words.length<=2) return d.label;
+      // Show first 2 words + ellipsis — clean, not cut mid-word
+      return words.slice(0,2).join(' ')+'…';
+    });
+
+  const node=svgG.append('g').selectAll('g').data(nodes).join('g')
+    .call(d3.drag()
+      .on('start',(e,d)=>{if(!e.active)simulation.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+      .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;})
+      .on('end',(e,d)=>{if(!e.active)simulation.alphaTarget(0);d.fx=null;d.fy=null;})
+    )
+    // On hover: show full node name + domain + all connected edge labels
+    .on('mouseover',(e,d)=>{
+      const connectedEdges=links.filter(l=>l.source.id===d.id||l.target.id===d.id);
+      const edgeInfo=connectedEdges.map(l=>{
+        const other=l.source.id===d.id?l.target.name:l.source.name;
+        return`  → ${l.label||'connects to'}: ${other}`;
+      }).join('\n');
+      const tipText=d.name+'\n['+d.domain+']'+(edgeInfo?'\n\nConnections:\n'+edgeInfo:'');
+      showTip(e,tipText);
+      // Highlight connected edges
+      link.attr('stroke',l=>(l.source.id===d.id||l.target.id===d.id)?'#008080':'#d1d5db')
+          .attr('stroke-width',l=>(l.source.id===d.id||l.target.id===d.id)?2.5:1.5);
+    })
+    .on('mouseout',(e,d)=>{
+      hideTip();
+      link.attr('stroke','#d1d5db').attr('stroke-width',1.5);
+    });
+
+  node.append('ellipse')
+    .attr('rx',44).attr('ry',17)
+    .attr('fill',d=>domainColor(d.domain).fill)
+    .attr('stroke',d=>domainColor(d.domain).stroke)
+    .attr('stroke-width',1.5);
+  node.append('text')
+    .attr('text-anchor','middle').attr('dy',4)
+    .attr('font-size',9).attr('font-weight','600')
+    .attr('fill',d=>domainColor(d.domain).text)
+    .text(d=>d.shortName);
+
+  simulation.on('tick',()=>{
+    link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+        .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+    edgeLbl.attr('x',d=>(d.source.x+d.target.x)/2)
+           .attr('y',d=>(d.source.y+d.target.y)/2-8);
+    node.attr('transform',d=>`translate(${d.x},${d.y})`);
+  });
+}
+
+function zoomIn(){d3.select('#kgSvg').transition().duration(300).call(zoomBehavior.scaleBy,1.5);}
+function zoomOut(){d3.select('#kgSvg').transition().duration(300).call(zoomBehavior.scaleBy,0.67);}
+function resetZoom(){d3.select('#kgSvg').transition().duration(300).call(zoomBehavior.transform,d3.zoomIdentity);}
+function showTip(e,text){const t=document.getElementById('tooltip');t.textContent=text;t.style.opacity='1';t.style.left=(e.clientX+14)+'px';t.style.top=(e.clientY-12)+'px';}
+function hideTip(){document.getElementById('tooltip').style.opacity='0';}
+function shuffleArr(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+</script>
+</body>
+</html>
