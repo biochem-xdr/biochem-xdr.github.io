@@ -171,107 +171,6 @@ input[type=text]::placeholder{color:var(--text3)}
 .tooltip{position:fixed;background:var(--navy);color:white;padding:8px 12px;border-radius:8px;font-size:11px;pointer-events:none;z-index:1000;max-width:280px;line-height:1.6;opacity:0;transition:opacity 0.15s;white-space:pre-line}
 svg text{pointer-events:none}
 .no-results{padding:28px;text-align:center;font-size:13px;color:var(--text3);line-height:1.7}
-
-/* ── MOBILE TAB BAR ── */
-.mob-tabs{display:none}
-
-/* ── MOBILE RESPONSIVE ── */
-@media(max-width:768px){
-
-  /* Body no longer fixed height — allow scrolling on mobile */
-  body{height:auto;min-height:100vh;overflow:auto}
-
-  /* Banner — shorter on mobile */
-  .banner{font-size:11px;padding:6px 12px;line-height:1.5}
-
-  /* Header — compact, hide tagline and nav buttons text */
-  header{height:48px;padding:0 12px;gap:8px}
-  .header-tagline{display:none}
-  .header-sep{display:none}
-  .stats-bar{display:none}
-  /* Show only icon-only nav buttons on mobile */
-  .nav-btn{padding:5px 8px;font-size:0}      /* font-size:0 hides text */
-  .nav-btn svg{width:15px;height:15px;flex-shrink:0}
-  /* Restore emoji text for HF button which has no SVG */
-  .nav-btn.hf-btn{font-size:13px}
-
-  /* Main — stack vertically instead of side by side */
-  .main{flex-direction:column;overflow:visible;height:auto}
-
-  /* Sidebar — full width, fixed height with scroll */
-  .sidebar{
-    width:100%;
-    height:auto;
-    max-height:50vh;
-    border-right:none;
-    border-bottom:1px solid var(--border);
-    flex-shrink:0;
-  }
-
-  /* Question list — shorter on mobile */
-  .question-list{max-height:calc(50vh - 130px)}
-
-  /* Detail panel — full width below sidebar */
-  .detail-panel{
-    width:100%;
-    min-height:60vh;
-    overflow:visible;
-  }
-
-  /* Detail content — remove overflow hidden on mobile */
-  .detail-content{
-    overflow:visible;
-    padding:16px;
-    gap:14px;
-  }
-
-  /* Choices — single column on small screens */
-  .choices-grid{grid-template-columns:1fr}
-
-  /* Graph — shorter on mobile */
-  #graphContainer{height:240px !important}
-
-  /* Modal — full screen on mobile */
-  .modal-box{
-    width:96%;
-    max-height:90vh;
-    padding:20px 16px;
-    border-radius:10px;
-  }
-
-  /* Splash — adjust for mobile */
-  .splash-logo{gap:12px;margin-bottom:28px}
-  .splash-title{font-size:24px}
-  .splash-bar-wrap{width:240px}
-
-  /* Mobile tab bar — shown only on mobile */
-  .mob-tabs{
-    display:flex;
-    background:var(--sidebar-bg);
-    border-bottom:1px solid var(--border);
-    flex-shrink:0;
-  }
-  .mob-tab{
-    flex:1;
-    padding:10px;
-    text-align:center;
-    font-size:12px;
-    font-weight:600;
-    color:var(--text2);
-    cursor:pointer;
-    border-bottom:2px solid transparent;
-    transition:all 0.15s;
-    background:none;
-    border-top:none;
-    border-left:none;
-    border-right:none;
-  }
-  .mob-tab.active{color:var(--teal);border-bottom-color:var(--teal);background:var(--bg)}
-
-  /* Hide/show panels based on active tab on mobile */
-  .sidebar.mob-hidden{display:none}
-  .detail-panel.mob-hidden{display:none}
-}
 </style>
 </head>
 <body>
@@ -352,15 +251,9 @@ svg text{pointer-events:none}
   </div>
 </header>
 
-<!-- MOBILE TAB BAR — hidden on desktop, shown on mobile -->
-<div class="mob-tabs" id="mobTabs">
-  <button class="mob-tab active" id="mobTabList" onclick="mobSwitch('list')">☰ Questions</button>
-  <button class="mob-tab" id="mobTabDetail" onclick="mobSwitch('detail')">⬡ Detail</button>
-</div>
-
 <!-- MAIN -->
 <div class="main">
-  <div class="sidebar" id="mobSidebar">
+  <div class="sidebar">
     <div class="search-area">
       <input type="text" id="searchInput" placeholder="Search questions, enzymes, diseases..." oninput="filterQuestions()">
       <div class="filter-row">
@@ -379,7 +272,7 @@ svg text{pointer-events:none}
     </div>
   </div>
 
-  <div class="detail-panel" id="mobDetail">
+  <div class="detail-panel">
     <div class="empty-state" id="emptyState">
       <svg width="54" height="54" viewBox="0 0 56 56" fill="none" opacity="0.28">
         <polygon points="28,6 49,17.5 49,40.5 28,52 7,40.5 7,17.5" fill="none" stroke="var(--navy)" stroke-width="2.2"/>
@@ -740,32 +633,6 @@ function resetZoom(){d3.select('#kgSvg').transition().duration(300).call(zoomBeh
 function showTip(e,text){const t=document.getElementById('tooltip');t.textContent=text;t.style.opacity='1';t.style.left=(e.clientX+14)+'px';t.style.top=(e.clientY-12)+'px';}
 function hideTip(){document.getElementById('tooltip').style.opacity='0';}
 function shuffleArr(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
-
-// ── MOBILE TAB SWITCHING ──
-function mobSwitch(tab){
-  const sidebar=document.getElementById('mobSidebar');
-  const detail=document.getElementById('mobDetail');
-  const tabList=document.getElementById('mobTabList');
-  const tabDetail=document.getElementById('mobTabDetail');
-  if(tab==='list'){
-    sidebar.classList.remove('mob-hidden');
-    detail.classList.add('mob-hidden');
-    tabList.classList.add('active');
-    tabDetail.classList.remove('active');
-  } else {
-    sidebar.classList.add('mob-hidden');
-    detail.classList.remove('mob-hidden');
-    tabList.classList.remove('active');
-    tabDetail.classList.add('active');
-  }
-}
-
-// Auto-switch to detail view on mobile when a question is selected
-const _origSelectItem = selectItem;
-function selectItem(idx){
-  _origSelectItem(idx);
-  if(window.innerWidth<=768) mobSwitch('detail');
-}
 </script>
 </body>
 </html>
