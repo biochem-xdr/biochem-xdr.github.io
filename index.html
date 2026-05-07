@@ -334,14 +334,16 @@ svg text{pointer-events:none}
 </div>
 
 <!-- BANNER -->
+<!-- BANNER — hidden until paper accepted
 <div class="banner">
   BioChem-XDR is open science — dataset, KG construction pipeline, evaluation scripts, and paper are publicly released.
   7,038 cross-domain biochemical reasoning questions built from KEGG · Rhea · UniProt to expose the co-occurrence trap in LLMs.
-  &nbsp;·&nbsp;<a href="https://github.com/YOUR_USERNAME/biochem-xdr" target="_blank">GitHub</a>
-  &nbsp;·&nbsp;<a href="https://huggingface.co/datasets/YOUR_HF/biochem-xdr" target="_blank">HuggingFace</a>
-  &nbsp;·&nbsp;<a href="YOUR_ARXIV_URL" target="_blank">Paper</a>
+  &nbsp;·&nbsp;<a href="https://github.com/biochem-xdr/biochem-xdr" target="_blank">GitHub</a>
+  &nbsp;·&nbsp;<a href="https://huggingface.co/datasets/biochem-xdr/biochem_xdr" target="_blank">HuggingFace</a>
+  &nbsp;·&nbsp;<a href="#" target="_blank">Paper</a>
   &nbsp;·&nbsp;If you find this useful, a ⭐ on GitHub is appreciated.
 </div>
+-->
 
 <!-- HEADER -->
 <header>
@@ -361,18 +363,18 @@ svg text{pointer-events:none}
   </div>
   <div class="spacer"></div>
   <div class="nav-btns">
-    <a class="nav-btn" href="YOUR_ARXIV_URL" target="_blank">
+    <button class="nav-btn" onclick="alert('Paper submitted for review — link will be available upon acceptance.')">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
         <rect x="2" y="1" width="10" height="13" rx="1.5"/>
         <path d="M5 5h6M5 8h6M5 11h4"/>
       </svg>
       Paper
-    </a>
-    <a class="nav-btn" href="https://github.com/YOUR_USERNAME/biochem-xdr" target="_blank">
+    </button>
+    <a class="nav-btn" href="https://github.com/biochem-xdr/biochem-xdr" target="_blank">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       GitHub
     </a>
-    <a class="nav-btn hf-btn" href="https://huggingface.co/datasets/YOUR_HF/biochem-xdr" target="_blank">🤗 Dataset</a>
+    <a class="nav-btn hf-btn" href="https://huggingface.co/datasets/biochem-xdr/biochem_xdr" target="_blank">🤗 Dataset</a>
     <button class="nav-btn eval-btn" onclick="document.getElementById('evalModal').style.display='flex'">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
         <polyline points="1,12 5,7 9,9 13,3"/>
@@ -395,15 +397,15 @@ svg text{pointer-events:none}
   <div class="mob-sheet-backdrop" onclick="closeMobMenu()"></div>
   <div class="mob-sheet-panel">
     <button class="mob-sheet-close" onclick="closeMobMenu()">×</button>
-    <a class="mob-sheet-link" href="YOUR_ARXIV_URL" target="_blank">
+    <button class="mob-sheet-link" onclick="closeMobMenu();alert('Paper submitted for review — link will be available upon acceptance.')">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="1" width="10" height="13" rx="1.5"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
       Paper
-    </a>
-    <a class="mob-sheet-link" href="https://github.com/YOUR_USERNAME/biochem-xdr" target="_blank">
+    </button>
+    <a class="mob-sheet-link" href="https://github.com/biochem-xdr/biochem-xdr" target="_blank">
       <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       GitHub
     </a>
-    <a class="mob-sheet-link hf" href="https://huggingface.co/datasets/YOUR_HF/biochem-xdr" target="_blank">🤗 Dataset</a>
+    <a class="mob-sheet-link hf" href="https://huggingface.co/datasets/biochem-xdr/biochem_xdr" target="_blank">🤗 Dataset</a>
     <div class="mob-sheet-divider"></div>
     <button class="mob-sheet-link eval" onclick="closeMobMenu();document.getElementById('evalModal').style.display='flex'">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="1,12 5,7 9,9 13,3"/><circle cx="13" cy="3" r="1.5" fill="currentColor" stroke="none"/><line x1="1" y1="15" x2="15" y2="15"/></svg>
@@ -456,37 +458,403 @@ svg text{pointer-events:none}
 </div>
 
 <!-- LEADERBOARD MODAL -->
-<div class="modal-overlay" id="evalModal" onclick="if(event.target===this)this.style.display='none'">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title">Leaderboard &amp; Evaluation Results</div>
-      <button class="modal-close" onclick="document.getElementById('evalModal').style.display='none'">×</button>
+<style>
+.lb-modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,30,0.55);z-index:500;align-items:flex-start;justify-content:center;overflow-y:auto;padding:24px 12px}
+.lb-modal-box{background:var(--bg);border-radius:16px;width:100%;max-width:780px;margin:auto;box-shadow:0 24px 80px rgba(0,0,0,0.18);overflow:hidden}
+.lb-modal-header{background:var(--navy);padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+.lb-modal-title{font-size:16px;font-weight:700;color:white;letter-spacing:-0.2px}
+.lb-modal-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px}
+.lb-modal-close{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
+.lb-modal-close:hover{background:rgba(255,255,255,0.2);color:white}
+.lb-meta-bar{background:rgba(0,128,128,0.06);border-bottom:1px solid rgba(0,128,128,0.12);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.lb-meta-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.lb-meta-t1{background:#e8f5e9;color:var(--t1)}
+.lb-meta-t2{background:#e3f0fb;color:var(--t2)}
+.lb-meta-t3{background:#fff3e0;color:var(--t3)}
+.lb-meta-t4{background:#ffebee;color:var(--t4)}
+.lb-meta-sep{color:var(--border2);font-size:14px}
+.lb-body{padding:20px 24px;display:flex;flex-direction:column;gap:20px}
+.lb-section-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);padding:0 0 8px 2px;border-bottom:2px solid var(--border);margin-bottom:0}
+.lb-table-wrap{border:1px solid var(--border2);border-radius:10px;overflow:hidden}
+.lb-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.lb-table thead tr{background:var(--navy)}
+.lb-table thead th{padding:9px 13px;color:rgba(255,255,255,0.75);font-weight:600;font-size:11px;letter-spacing:0.4px;text-align:right;white-space:nowrap}
+.lb-table thead th:first-child{text-align:left;padding-left:16px}
+.lb-table tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s}
+.lb-table tbody tr:last-child{border-bottom:none}
+.lb-table tbody tr:hover{background:var(--bg2)}
+.lb-table tbody td{padding:9px 13px;text-align:right;color:var(--text);white-space:nowrap}
+.lb-table tbody td:first-child{text-align:left;padding-left:16px;font-weight:500}
+.lb-num{font-variant-numeric:tabular-nums;font-size:12.5px}
+.lb-best{font-weight:700;color:var(--teal)}
+.lb-rank1 td:first-child{border-left:3px solid var(--teal)}
+.lb-ci{font-size:10px;color:var(--text3);margin-left:1px}
+/* tier mini-bar inside cells */
+.lb-tier-bar{display:inline-flex;align-items:center;gap:5px}
+.lb-t1-val{color:var(--t1)}
+.lb-t2-val{color:var(--t2)}
+.lb-t3-val{color:var(--t3)}
+.lb-t4-val{color:var(--t4)}
+/* drop table */
+.lb-drop-neg{color:#c62828;font-weight:700}
+/* footnote */
+.lb-footnote{font-size:11px;color:var(--text3);line-height:1.7;padding:0 2px}
+.lb-footnote strong{color:var(--text2)}
+</style>
+<div class="lb-modal-overlay" id="evalModal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="lb-modal-box">
+
+    <!-- Header -->
+    <div class="lb-modal-header">
+      <div>
+        <div class="lb-modal-title">Leaderboard &amp; Evaluation Results</div>
+        <div class="lb-modal-sub">BioChem-XDR · 7,002 items (full) · 350-item Gold subset · 17 models evaluated</div>
+      </div>
+      <button class="lb-modal-close" onclick="document.getElementById('evalModal').style.display='none'">×</button>
     </div>
-    <div class="placeholder-note">
-      Full 12-model evaluation results will be published here upon paper release.
-      Evaluation covers frontier general models, biomedical-specialized models, and smaller general models.
-      The table below shows GPT-4o calibration results used to construct difficulty tiers.
+
+    <!-- Meta bar -->
+    <div class="lb-meta-bar">
+      <span style="font-size:11px;color:var(--text2);font-weight:500">Difficulty tiers:</span>
+      <span class="lb-meta-pill lb-meta-t1">T1 Easy ≥70% · n=1,547</span>
+      <span class="lb-meta-pill lb-meta-t2">T2 Medium 40–70% · n=1,488</span>
+      <span class="lb-meta-pill lb-meta-t3">T3 Hard 10–40% · n=2,159</span>
+      <span class="lb-meta-pill lb-meta-t4">T4 Very Hard &lt;10% · n=1,808</span>
     </div>
-    <table>
-      <thead><tr><th>Tier</th><th>Items</th><th>GPT-4o Acc.</th><th>Avg Crossings</th><th>Definition</th></tr></thead>
-      <tbody>
-        <tr><td><span class="tier-badge tier-T1">T1</span></td><td>2,837</td><td style="color:var(--t1);font-weight:700">100%</td><td>2.37</td><td style="color:var(--text2)">GPT-4o correct · lower crossings</td></tr>
-        <tr><td><span class="tier-badge tier-T2">T2</span></td><td>2,890</td><td style="color:var(--t2);font-weight:700">100%</td><td>4.72</td><td style="color:var(--text2)">GPT-4o correct · higher crossings</td></tr>
-        <tr><td><span class="tier-badge tier-T3">T3</span></td><td>640</td><td style="color:var(--t3);font-weight:700">0%</td><td>2.59</td><td style="color:var(--text2)">GPT-4o failed · lower crossings</td></tr>
-        <tr><td><span class="tier-badge tier-T4">T4</span></td><td>671</td><td style="color:var(--t4);font-weight:700">0%</td><td>4.73</td><td style="color:var(--text2)">GPT-4o failed · higher crossings</td></tr>
-        <tr style="border-top:2px solid var(--border)"><td><strong>Total</strong></td><td><strong>7,038</strong></td><td><strong>81.0%</strong></td><td>—</td><td style="color:var(--text2)">Full BioChem-XDR dataset</td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:14px;font-size:11px;color:var(--text3);line-height:1.7">
-      Full 12-model leaderboard · BioChem-XDR Verified (~1,200 PhD-annotated) ·
-      BioChem-XDR Gold (~300 professor-verified) results coming with paper publication.
-    </div>
+
+    <div class="lb-body">
+
+      <!-- Frontier General-Purpose -->
+      <div>
+        <div class="lb-section-label">Frontier General-Purpose Models <span style="font-size:10px;font-weight:500;color:var(--text3);text-transform:none;letter-spacing:0">(full 7,002-item dataset)</span></div>
+        <div class="lb-table-wrap" style="margin-top:10px">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Overall</th>
+                <th style="color:rgba(46,125,50,0.85)">T1 Easy</th>
+                <th style="color:rgba(21,101,192,0.85)">T2 Med</th>
+                <th style="color:rgba(230,81,0,0.85)">T3 Hard</th>
+                <th style="color:rgba(198,40,40,0.85)">T4 V.Hard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="lb-rank1">
+                <td><strong>Claude Sonnet 4.6</strong></td>
+                <td><span class="lb-num lb-best">50.6</span><span class="lb-ci">(49.4–51.7)</span></td>
+                <td><span class="lb-num lb-t1-val">94.0</span></td>
+                <td><span class="lb-num lb-t2-val lb-best">72.7</span></td>
+                <td><span class="lb-num lb-t3-val lb-best">40.6</span></td>
+                <td><span class="lb-num lb-t4-val">7.1</span></td>
+              </tr>
+              <tr>
+                <td>Gemini 2.5 Flash</td>
+                <td><span class="lb-num">44.3</span><span class="lb-ci">(43.1–45.5)</span></td>
+                <td><span class="lb-num lb-t1-val">93.6</span></td>
+                <td><span class="lb-num lb-t2-val">68.0</span></td>
+                <td><span class="lb-num lb-t3-val">28.4</span></td>
+                <td><span class="lb-num lb-t4-val">1.6</span></td>
+              </tr>
+              <tr>
+                <td>Qwen3-235B</td>
+                <td><span class="lb-num">44.3</span><span class="lb-ci">(43.1–45.4)</span></td>
+                <td><span class="lb-num lb-t1-val lb-best">96.4</span></td>
+                <td><span class="lb-num lb-t2-val">72.1</span></td>
+                <td><span class="lb-num lb-t3-val">23.5</span></td>
+                <td><span class="lb-num lb-t4-val">1.5</span></td>
+              </tr>
+              <tr>
+                <td>GPT-4o</td>
+                <td><span class="lb-num">43.3</span><span class="lb-ci">(42.1–44.4)</span></td>
+                <td><span class="lb-num lb-t1-val">95.8</span></td>
+                <td><span class="lb-num lb-t2-val">68.4</span></td>
+                <td><span class="lb-num lb-t3-val">23.6</span></td>
+                <td><span class="lb-num lb-t4-val">1.2</span></td>
+              </tr>
+              <tr>
+                <td>DeepSeek-V3</td>
+                <td><span class="lb-num">38.1</span><span class="lb-ci">(37.0–39.3)</span></td>
+                <td><span class="lb-num lb-t1-val">85.6</span></td>
+                <td><span class="lb-num lb-t2-val">54.2</span></td>
+                <td><span class="lb-num lb-t3-val">22.8</span></td>
+                <td><span class="lb-num lb-t4-val">2.6</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- General Open-Weight -->
+      <div>
+        <div class="lb-section-label">General Open-Weight Models <span style="font-size:10px;font-weight:500;color:var(--text3);text-transform:none;letter-spacing:0">(full 7,002-item dataset)</span></div>
+        <div class="lb-table-wrap" style="margin-top:10px">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Overall</th>
+                <th style="color:rgba(46,125,50,0.85)">T1 Easy</th>
+                <th style="color:rgba(21,101,192,0.85)">T2 Med</th>
+                <th style="color:rgba(230,81,0,0.85)">T3 Hard</th>
+                <th style="color:rgba(198,40,40,0.85)">T4 V.Hard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="lb-rank1">
+                <td><strong>Qwen3-32B</strong></td>
+                <td><span class="lb-num lb-best">41.0</span><span class="lb-ci">(39.8–42.1)</span></td>
+                <td><span class="lb-num lb-t1-val lb-best">92.6</span></td>
+                <td><span class="lb-num lb-t2-val">56.5</span></td>
+                <td><span class="lb-num lb-t3-val">24.6</span></td>
+                <td><span class="lb-num lb-t4-val">3.5</span></td>
+              </tr>
+              <tr>
+                <td>Mistral-7B</td>
+                <td><span class="lb-num">39.3</span><span class="lb-ci">(38.2–40.5)</span></td>
+                <td><span class="lb-num lb-t1-val">86.4</span></td>
+                <td><span class="lb-num lb-t2-val">49.0</span></td>
+                <td><span class="lb-num lb-t3-val lb-best">28.4</span></td>
+                <td><span class="lb-num lb-t4-val lb-best">4.0</span></td>
+              </tr>
+              <tr>
+                <td>Llama-3.3-70B</td>
+                <td><span class="lb-num">38.7</span><span class="lb-ci">(37.5–39.8)</span></td>
+                <td><span class="lb-num lb-t1-val">92.4</span></td>
+                <td><span class="lb-num lb-t2-val lb-best">57.5</span></td>
+                <td><span class="lb-num lb-t3-val">18.7</span></td>
+                <td><span class="lb-num lb-t4-val">1.1</span></td>
+              </tr>
+              <tr>
+                <td>Gemma-3-27B</td>
+                <td><span class="lb-num">37.9</span><span class="lb-ci">(36.8–39.0)</span></td>
+                <td><span class="lb-num lb-t1-val">91.3</span></td>
+                <td><span class="lb-num lb-t2-val">51.1</span></td>
+                <td><span class="lb-num lb-t3-val">20.5</span></td>
+                <td><span class="lb-num lb-t4-val">2.0</span></td>
+              </tr>
+              <tr>
+                <td>Llama-3-8B</td>
+                <td><span class="lb-num">35.0</span><span class="lb-ci">(33.9–36.1)</span></td>
+                <td><span class="lb-num lb-t1-val">85.2</span></td>
+                <td><span class="lb-num lb-t2-val">45.1</span></td>
+                <td><span class="lb-num lb-t3-val">20.0</span></td>
+                <td><span class="lb-num lb-t4-val">1.8</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Biomedical Fine-Tuned -->
+      <div>
+        <div class="lb-section-label">Biomedical Fine-Tuned Models <span style="font-size:10px;font-weight:500;color:var(--text3);text-transform:none;letter-spacing:0">(full 7,002-item dataset)</span></div>
+        <div class="lb-table-wrap" style="margin-top:10px">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Overall</th>
+                <th style="color:rgba(46,125,50,0.85)">T1 Easy</th>
+                <th style="color:rgba(21,101,192,0.85)">T2 Med</th>
+                <th style="color:rgba(230,81,0,0.85)">T3 Hard</th>
+                <th style="color:rgba(198,40,40,0.85)">T4 V.Hard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="lb-rank1">
+                <td><strong>OpenBioLLM-8B</strong></td>
+                <td><span class="lb-num lb-best">40.4</span><span class="lb-ci">(39.3–41.6)</span></td>
+                <td><span class="lb-num lb-t1-val lb-best">88.9</span></td>
+                <td><span class="lb-num lb-t2-val lb-best">52.7</span></td>
+                <td><span class="lb-num lb-t3-val">27.6</span></td>
+                <td><span class="lb-num lb-t4-val">4.1</span></td>
+              </tr>
+              <tr>
+                <td>BioMistral-7B</td>
+                <td><span class="lb-num">39.5</span><span class="lb-ci">(38.3–40.6)</span></td>
+                <td><span class="lb-num lb-t1-val">77.2</span></td>
+                <td><span class="lb-num lb-t2-val">43.0</span></td>
+                <td><span class="lb-num lb-t3-val lb-best">33.5</span></td>
+                <td><span class="lb-num lb-t4-val lb-best">11.2</span></td>
+              </tr>
+              <tr>
+                <td>MedGemma-27B</td>
+                <td><span class="lb-num">39.0</span><span class="lb-ci">(37.9–40.2)</span></td>
+                <td><span class="lb-num lb-t1-val">90.2</span></td>
+                <td><span class="lb-num lb-t2-val">51.0</span></td>
+                <td><span class="lb-num lb-t3-val">24.4</span></td>
+                <td><span class="lb-num lb-t4-val">2.8</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Reasoning Models — Gold subset only -->
+      <div>
+        <div class="lb-section-label">Reasoning Models <span style="font-size:10px;font-weight:500;color:var(--gold-tier);text-transform:none;letter-spacing:0">★ Gold subset only (n=350)</span></div>
+        <div class="lb-table-wrap" style="margin-top:10px">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Overall</th>
+                <th style="color:rgba(46,125,50,0.85)">T1 Easy</th>
+                <th style="color:rgba(21,101,192,0.85)">T2 Med</th>
+                <th style="color:rgba(230,81,0,0.85)">T3 Hard</th>
+                <th style="color:rgba(198,40,40,0.85)">T4 V.Hard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="lb-rank1">
+                <td><strong>OpenAI o3</strong></td>
+                <td><span class="lb-num lb-best">51.7</span><span class="lb-ci">(46.5–56.9)</span></td>
+                <td><span class="lb-num lb-t1-val lb-best">94.0</span></td>
+                <td><span class="lb-num lb-t2-val lb-best">78.7</span></td>
+                <td><span class="lb-num lb-t3-val lb-best">49.6</span></td>
+                <td><span class="lb-num lb-t4-val lb-best">14.4</span></td>
+              </tr>
+              <tr>
+                <td>DeepSeek V4 Pro</td>
+                <td><span class="lb-num">50.3</span><span class="lb-ci">(45.1–55.5)</span></td>
+                <td><span class="lb-num lb-t1-val">90.0</span></td>
+                <td><span class="lb-num lb-t2-val">74.7</span></td>
+                <td><span class="lb-num lb-t3-val">49.6</span></td>
+                <td><span class="lb-num lb-t4-val">14.4</span></td>
+              </tr>
+              <tr>
+                <td>QwQ-32B</td>
+                <td><span class="lb-num">37.7</span><span class="lb-ci">(32.8–42.9)</span></td>
+                <td><span class="lb-num lb-t1-val">74.0</span></td>
+                <td><span class="lb-num lb-t2-val">57.3</span></td>
+                <td><span class="lb-num lb-t3-val">35.5</span></td>
+                <td><span class="lb-num lb-t4-val">8.7</span></td>
+              </tr>
+              <tr>
+                <td>R1-Distill-Qwen-32B</td>
+                <td><span class="lb-num">34.9</span><span class="lb-ci">(30.1–40.0)</span></td>
+                <td><span class="lb-num lb-t1-val">84.0</span></td>
+                <td><span class="lb-num lb-t2-val">53.3</span></td>
+                <td><span class="lb-num lb-t3-val">25.6</span></td>
+                <td><span class="lb-num lb-t4-val">8.7</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Baselines — Gold subset only -->
+      <div>
+        <div class="lb-section-label">Baselines <span style="font-size:10px;font-weight:500;color:var(--gold-tier);text-transform:none;letter-spacing:0">★ Gold subset only (n=350)</span></div>
+        <div class="lb-table-wrap" style="margin-top:10px">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Overall</th>
+                <th style="color:rgba(46,125,50,0.85)">T1 Easy</th>
+                <th style="color:rgba(21,101,192,0.85)">T2 Med</th>
+                <th style="color:rgba(230,81,0,0.85)">T3 Hard</th>
+                <th style="color:rgba(198,40,40,0.85)">T4 V.Hard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Human Experts (Gold)</strong></td>
+                <td><span class="lb-num" style="font-weight:600">45.2</span></td>
+                <td><span class="lb-num lb-t1-val">89.8</span></td>
+                <td><span class="lb-num lb-t2-val">67.6</span></td>
+                <td><span class="lb-num lb-t3-val">36.7</span></td>
+                <td><span class="lb-num lb-t4-val">18.3</span></td>
+              </tr>
+              <tr>
+                <td>Random Chance</td>
+                <td><span class="lb-num">25.0</span></td>
+                <td><span class="lb-num lb-t1-val">25.0</span></td>
+                <td><span class="lb-num lb-t2-val">25.0</span></td>
+                <td><span class="lb-num lb-t3-val">25.0</span></td>
+                <td><span class="lb-num lb-t4-val">25.0</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Co-occurrence Trap -->
+      <div>
+        <div class="lb-section-label">Co-occurrence Trap — MCQ vs Open-Ended</div>
+        <div class="lb-table-wrap" style="margin-top:10px">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>MCQ Accuracy</th>
+                <th>Open-ended Accuracy</th>
+                <th>Drop (pp)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GPT-4o</td>
+                <td><span class="lb-num">43.3%</span></td>
+                <td><span class="lb-num">13.9%</span></td>
+                <td><span class="lb-drop-neg">−29.4</span></td>
+              </tr>
+              <tr>
+                <td>Claude Sonnet 4.6</td>
+                <td><span class="lb-num">50.6%</span></td>
+                <td><span class="lb-num">15.1%</span></td>
+                <td><span class="lb-drop-neg">−35.9</span></td>
+              </tr>
+              <tr>
+                <td>Llama-3.3-70B</td>
+                <td><span class="lb-num">38.7%</span></td>
+                <td><span class="lb-num">11.2%</span></td>
+                <td><span class="lb-drop-neg">−27.5</span></td>
+              </tr>
+              <tr>
+                <td>Llama-3-8B</td>
+                <td><span class="lb-num">35.0%</span></td>
+                <td><span class="lb-num">6.5%</span></td>
+                <td><span class="lb-drop-neg">−28.5</span></td>
+              </tr>
+              <tr style="background:var(--bg2);border-top:2px solid var(--border2)">
+                <td><strong>Average</strong></td>
+                <td><strong>41.9%</strong></td>
+                <td><strong>11.7%</strong></td>
+                <td><span class="lb-drop-neg" style="font-size:13px">−30.2</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="lb-footnote">
+        All models show large negative drops between MCQ and open-ended accuracy, confirming <strong>systematic MCQ inflation</strong>.
+        Open-ended accuracy judged by GPT-4o-mini semantic evaluator. · Reasoning models and Human Expert baselines evaluated on the <strong>★ Gold subset (n=350)</strong> only. · BioChem-XDR Verified results coming soon.
+      </div>
+
+    </div><!-- /.lb-body -->
   </div>
 </div>
 
 <script>
 let allData=[],filtered=[],selectedTier='all',currentItem=null;
 let simulation=null,zoomBehavior=null,svgG=null;
+
+// Gold subset — 350 professor-verified items (Gold takes priority over Verified)
+const GOLD_IDS=new Set([1,22,42,43,63,65,130,138,172,174,202,204,221,223,224,236,285,302,344,345,427,450,461,463,520,522,531,560,581,603,606,627,681,714,720,742,744,747,773,804,805,821,831,833,840,844,848,859,871,905,914,925,1024,1037,1075,1135,1189,1197,1228,1240,1242,1261,1264,1274,1290,1316,1329,1357,1382,1420,1454,1458,1464,1517,1552,1555,1561,1621,1635,1674,1805,1849,1859,1873,1884,1894,1896,1939,1947,1975,1978,2015,2016,2023,2076,2098,2104,2134,2157,2175,2178,2202,2209,2212,2265,2299,2332,2343,2344,2352,2355,2358,2363,2379,2382,2385,2416,2442,2498,2504,2524,2527,2533,2539,2553,2578,2589,2590,2597,2611,2628,2677,2688,2697,2705,2714,2740,2748,2810,2827,2828,2851,2856,2889,2911,2933,2949,2954,2973,2976,2979,3010,3033,3062,3082,3118,3134,3191,3201,3221,3237,3294,3306,3318,3367,3371,3404,3484,3493,3602,3616,3634,3642,3643,3660,3673,3712,3732,3779,3800,3809,3820,3835,3837,3862,3865,3866,3883,3885,3916,3917,3967,3980,4029,4083,4120,4147,4152,4168,4208,4225,4227,4255,4273,4338,4357,4364,4367,4408,4425,4451,4488,4502,4554,4556,4604,4615,4636,4724,4738,4782,4785,4833,4838,4839,4860,4862,4865,4868,4872,4895,4909,4918,5002,5020,5035,5054,5081,5109,5128,5130,5145,5187,5195,5242,5322,5379,5388,5396,5413,5429,5452,5457,5477,5539,5551,5577,5587,5598,5601,5623,5626,5630,5665,5680,5682,5693,5697,5713,5726,5733,5751,5753,5761,5767,5769,5770,5783,5814,5826,5839,5878,5886,5894,5907,5918,5930,5942,6005,6031,6034,6039,6052,6056,6061,6105,6110,6119,6219,6234,6257,6273,6309,6330,6343,6357,6387,6400,6405,6408,6426,6450,6458,6479,6480,6501,6514,6520,6578,6614,6648,6658,6673,6710,6738,6749,6763,6764,6765,6766,6796,6808,6826,6828,6847,6848,6849,6902,6905,6909,6924,6932,6950,6953,6960,6983,7004,7039,7058,7065]);
+// Verified subset — 974 PhD-annotated items
+const VERIFIED_IDS=new Set([1,6,22,42,43,63,65,83,108,119,129,130,138,151,172,174,196,202,203,204,217,221,223,224,225,232,236,242,246,255,268,280,285,287,295,302,310,328,344,345,351,369,392,407,414,427,443,450,454,461,463,471,498,502,504,520,522,531,549,560,570,581,603,606,619,627,646,649,654,657,658,673,675,677,681,688,691,700,702,707,711,714,720,737,742,744,747,758,773,774,794,804,805,821,829,831,833,840,844,848,858,859,871,882,884,889,892,902,903,905,909,914,925,926,932,937,945,951,956,984,992,994,997,1003,1009,1024,1037,1057,1069,1075,1083,1093,1100,1105,1107,1115,1128,1135,1142,1150,1151,1153,1173,1189,1197,1219,1221,1228,1231,1240,1242,1249,1261,1264,1274,1290,1302,1306,1311,1316,1329,1350,1351,1357,1367,1369,1379,1382,1384,1389,1420,1425,1429,1454,1458,1464,1477,1507,1517,1522,1523,1524,1544,1552,1555,1561,1570,1595,1605,1607,1620,1621,1633,1635,1664,1674,1679,1683,1707,1736,1746,1752,1757,1766,1777,1787,1793,1802,1805,1809,1849,1858,1859,1872,1873,1882,1884,1885,1894,1896,1897,1901,1906,1930,1939,1940,1947,1957,1958,1961,1966,1974,1975,1978,1990,2004,2015,2016,2017,2023,2024,2028,2029,2047,2076,2077,2079,2085,2097,2098,2104,2114,2116,2117,2120,2127,2134,2157,2167,2175,2178,2185,2187,2192,2200,2202,2207,2209,2212,2226,2250,2265,2267,2299,2313,2325,2330,2332,2343,2344,2345,2352,2355,2358,2363,2366,2374,2375,2379,2382,2383,2385,2401,2413,2416,2417,2420,2437,2442,2453,2483,2485,2486,2493,2498,2504,2517,2521,2524,2527,2533,2535,2537,2539,2541,2553,2557,2578,2589,2590,2594,2597,2611,2612,2621,2628,2637,2642,2645,2655,2677,2688,2690,2693,2694,2697,2705,2714,2732,2740,2743,2748,2750,2777,2781,2788,2800,2810,2819,2827,2828,2851,2856,2858,2865,2872,2883,2889,2894,2909,2910,2911,2915,2918,2930,2933,2943,2949,2954,2958,2973,2976,2978,2979,2991,2994,3002,3007,3010,3012,3022,3033,3034,3043,3044,3062,3067,3080,3082,3096,3116,3118,3123,3126,3134,3136,3167,3191,3193,3194,3198,3201,3214,3221,3235,3237,3253,3255,3263,3276,3285,3294,3303,3306,3308,3317,3318,3322,3330,3355,3367,3371,3388,3390,3401,3404,3405,3409,3444,3446,3456,3461,3484,3488,3493,3497,3530,3560,3596,3602,3616,3631,3634,3635,3637,3642,3643,3644,3646,3657,3660,3672,3673,3678,3680,3685,3686,3701,3712,3732,3742,3757,3760,3773,3779,3780,3783,3798,3800,3801,3809,3820,3827,3829,3835,3837,3841,3854,3857,3858,3862,3865,3866,3867,3883,3885,3888,3891,3901,3905,3911,3916,3917,3918,3923,3927,3948,3949,3950,3962,3967,3975,3976,3977,3980,4005,4010,4029,4044,4045,4063,4068,4073,4075,4083,4094,4105,4113,4118,4120,4127,4130,4138,4146,4147,4152,4168,4173,4208,4212,4223,4224,4225,4226,4227,4249,4254,4255,4256,4261,4273,4283,4286,4293,4296,4298,4306,4317,4325,4338,4341,4345,4357,4364,4367,4384,4405,4408,4411,4412,4424,4425,4432,4442,4451,4453,4461,4475,4478,4479,4484,4488,4493,4500,4502,4510,4522,4529,4538,4548,4549,4551,4552,4554,4556,4565,4581,4590,4592,4602,4603,4604,4615,4616,4618,4636,4639,4640,4643,4649,4653,4673,4677,4682,4713,4721,4724,4738,4739,4742,4752,4753,4761,4781,4782,4783,4784,4785,4796,4797,4802,4807,4813,4833,4838,4839,4853,4858,4860,4862,4865,4868,4871,4872,4873,4874,4876,4880,4892,4895,4896,4897,4899,4909,4910,4911,4918,4928,4952,4955,4958,4959,4962,4968,5002,5013,5020,5028,5035,5036,5045,5054,5055,5067,5068,5074,5081,5086,5091,5096,5097,5099,5108,5109,5127,5128,5130,5133,5134,5145,5147,5149,5151,5163,5164,5165,5167,5179,5182,5187,5192,5195,5205,5213,5223,5235,5242,5247,5250,5251,5259,5266,5286,5290,5295,5304,5309,5312,5322,5330,5334,5340,5344,5348,5352,5375,5379,5388,5389,5396,5413,5414,5425,5429,5440,5442,5444,5447,5448,5452,5454,5457,5477,5482,5485,5503,5509,5526,5529,5539,5545,5546,5551,5558,5563,5571,5577,5587,5588,5594,5598,5601,5606,5623,5626,5630,5634,5638,5652,5660,5665,5680,5681,5682,5683,5691,5693,5695,5696,5697,5699,5706,5713,5726,5727,5731,5733,5737,5740,5751,5753,5761,5767,5769,5770,5772,5783,5797,5807,5813,5814,5816,5826,5829,5839,5847,5850,5861,5878,5884,5885,5886,5894,5907,5911,5912,5917,5918,5919,5923,5930,5941,5942,5951,5952,5953,5955,5956,5958,5964,5988,5993,5997,6005,6008,6016,6031,6034,6039,6052,6056,6061,6096,6105,6107,6110,6119,6128,6137,6142,6173,6214,6219,6234,6241,6242,6256,6257,6262,6273,6279,6282,6308,6309,6311,6324,6330,6336,6343,6346,6354,6357,6370,6387,6400,6403,6405,6408,6415,6426,6449,6450,6458,6466,6479,6480,6500,6501,6511,6514,6520,6525,6554,6572,6573,6578,6609,6614,6642,6648,6650,6658,6665,6672,6673,6696,6710,6734,6738,6749,6763,6764,6765,6766,6789,6793,6796,6797,6799,6808,6814,6820,6822,6823,6826,6828,6836,6847,6848,6849,6850,6853,6865,6866,6876,6893,6896,6900,6902,6905,6909,6913,6914,6922,6924,6930,6932,6938,6944,6947,6950,6953,6956,6960,6962,6971,6980,6983,6998,7000,7004,7005,7008,7009,7025,7027,7036,7039,7050,7058,7060,7065,7087,7090,7093,7181,7292,7324,7353,7439,7468,7593,7595,7621]);
+// Tag items: Gold takes priority, then Verified
+function tagGoldItems(data){
+  data.forEach(item=>{
+    if(GOLD_IDS.has(item.id)) item.tier='Gold';
+    else if(VERIFIED_IDS.has(item.id)) item.tier='Verified';
+  });
+  return data;
+}
 
 function setSplash(pct,msg){
   document.getElementById('splashBar').style.width=pct+'%';
@@ -499,6 +867,7 @@ fetch('data.json')
   .then(r=>{if(!r.ok)throw new Error();return r.json();})
   .then(data=>{
     setSplash(65,'Shuffling '+data.length.toLocaleString()+' questions...');
+    tagGoldItems(data);
     shuffleArr(data);
     allData=data;
     setSplash(92,'Building interface...');
@@ -509,6 +878,7 @@ fetch('data.json')
   .catch(()=>{
     setSplash(100,'Demo mode — sample data loaded');
     loadDemo();
+    tagGoldItems(allData);
     setTimeout(()=>{hideSplash();initApp();},700);
   });
 
